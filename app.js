@@ -1,13 +1,24 @@
 'use strict';
-
-const fs = require('fs');
-const os = require('os');
-const _= require('lodash');
-
 console.log('Starting app');
 
-var user = os.userInfo();
-fs.appendFile('greetings.txt',`Hello ${user.username}!`);
+const fs = require('fs');
+const _= require('lodash');
+const yargs = require('yargs');
 
-// var filteredArray = _.uniq(['Mario',1,'Mario',2,3,4,1,5,'Holis','Mario']);
-// console.log(filteredArray);
+const notes = require('./notes');
+const argv = yargs.argv;
+var command = argv._[0];
+// console.log('Command:', command);
+// console.log('Yargs',argv);
+
+if (command == 'add'){
+  notes.addNote(argv.title,argv.body);
+} else if (command === 'list'){
+  notes.getAll();
+} else if (command === 'read') {
+  notes.getNote(argv.title);
+} else if (command === 'remove') {
+  notes.remove(argv.title);
+} else{
+  console.log('Unrecognized command');
+}
